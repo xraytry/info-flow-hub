@@ -1,0 +1,16 @@
+[Unit]
+Description=Info Flow Hub
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/lhb/info-flow-hub
+Environment=INFO_FLOW_DB=/home/lhb/info-flow-hub/info_flow_hub.db
+Environment=PORT=8030
+Environment=CDP_URL=http://127.0.0.1:9222
+ExecStart=/home/lhb/info-flow-hub/.venv/bin/python backend/run.py
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=default.target
