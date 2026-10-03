@@ -4,7 +4,6 @@ import sys
 import unittest
 
 sys.path.insert(0, os.getcwd())
-sys.path.insert(0, str(Path('backend').resolve()))
 sys.path.insert(0, str(Path('backend/tests').resolve()))
 import test_core
 

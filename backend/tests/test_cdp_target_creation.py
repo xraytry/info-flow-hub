@@ -5,7 +5,7 @@ import unittest
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from unittest.mock import patch
 
-from app.fetchers import fetch_cdp_browser
+from backend.app.fetchers import fetch_cdp_browser
 
 
 class TargetCreationTest(unittest.TestCase):
@@ -57,7 +57,7 @@ class TargetCreationTest(unittest.TestCase):
         base = f"http://127.0.0.1:{server.server_port}"
         try:
             with patch.dict(os.environ, {"CDP_URL": base}), patch(
-                "app.fetchers.create_connection", return_value=session
+                "backend.app.fetchers.create_connection", return_value=session
             ):
                 items = fetch_cdp_browser({"url": base + "/fixture-page", "wait_seconds": 0})
             self.assertEqual([item.title for item in items], ["Local fixture"])

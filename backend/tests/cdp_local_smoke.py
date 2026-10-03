@@ -45,8 +45,8 @@ try:
     if not ready:raise TimeoutError()
     stage='source_cdp_fetch'
     os.environ['CDP_URL']='http://127.0.0.1:9222'
-    sys.path.insert(0,str(Path.cwd()/'backend'))
-    from app.fetchers import fetch_cdp_browser
+    sys.path.insert(0,str(Path.cwd()))
+    from backend.app.fetchers import fetch_cdp_browser
     items=fetch_cdp_browser({'url':f'http://127.0.0.1:{server.server_port}/page','item_selector':'article','title_selector':'h2','link_selector':'a','content_selector':'p','wait_seconds':0.2})
     assert len(items)==1 and items[0].title=='Sandbox CDP item'
     result={'status':'PASS','checks':['real_cdp_browser_local_navigation_and_dom_extract'],'item_count':len(items),'external_session_used':False}

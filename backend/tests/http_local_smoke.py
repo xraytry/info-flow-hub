@@ -44,8 +44,8 @@ try:
         assert response.status_code==200
         checks.append('health_endpoint_against_disposable_sqlite')
     else:
-        sys.path.insert(0,str(Path.cwd()/'backend'))
-        from app.fetchers import fetch_rss,fetch_http_scrape
+        sys.path.insert(0,str(Path.cwd()))
+        from backend.app.fetchers import fetch_rss,fetch_http_scrape
         items=fetch_rss({'feed_url':url+'/feed'})
         assert len(items)==1 and items[0].title=='Sandbox item'
         checks.append('real_local_http_rss_fetch_and_parse')
@@ -53,7 +53,7 @@ try:
         assert len(items)==1 and items[0].title=='Sandbox item'
         checks.append('real_local_http_scrape_and_selector_parse')
         os.environ['INFO_FLOW_DB']='/tmp/info-flow-fixture.sqlite3'
-        from app.main import app
+        from backend.app.main import app
         from fastapi.testclient import TestClient
         with TestClient(app) as client:
             response=client.get('/api/health')
