@@ -184,7 +184,7 @@ def fetch_cdp_browser(config: dict[str, Any]) -> list[FetchedItem]:
         raise ValueError("cdp_browser config requires url")
     cdp_url = os.environ.get("CDP_URL", "http://127.0.0.1:9222").rstrip("/")
     create_url = f"{cdp_url}/json/new?{urllib.parse.quote(target_url, safe='')}"
-    with urllib.request.urlopen(create_url, timeout=10) as response:
+    with urllib.request.urlopen(urllib.request.Request(create_url, method="PUT"), timeout=10) as response:
         target = json.loads(response.read().decode("utf-8"))
     ws_url = target["webSocketDebuggerUrl"]
     ws = create_connection(ws_url, timeout=20)
@@ -200,7 +200,7 @@ def fetch_cdp_browser(config: dict[str, Any]) -> list[FetchedItem]:
             {"expression": expression, "returnByValue": True, "awaitPromise": True},
             request_id=4,
         )
-        return parse_cdp_runtime_result({"result": payload})
+        return parse_cdp_runtime_result(payload)
     finally:
         ws.close()
         close_url = f"{cdp_url}/json/close/{target.get('id')}"
